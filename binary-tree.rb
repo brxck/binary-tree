@@ -45,11 +45,22 @@ class BinarySearchTree
     stack = [@root]
     until stack.empty?
       node = stack.pop
-      return node.value if node.value == value
+      return node if node.value == value
       stack << node.left unless node.left.nil? || node.value < value
       stack << node.right unless node.right.nil? || node.value >= value
     end
-    "nil"
+    nil
+  end
+
+  def dfs_rec(value, node = @root)
+    return nil if node.nil?
+    if value < node.value
+      dfs_rec(value, node.left)
+    elsif value > node.value
+      dfs_rec(value, node.right)
+    else
+      return node
+    end
   end
 end
 
@@ -57,4 +68,4 @@ array = Array.new(10) { rand(100) }
 @tree = BinarySearchTree.new
 @tree.build_tree(array)
 @tree.root.insert(88)
-puts @tree.depth_first_search(88)
+puts @tree.dfs_rec(88)
